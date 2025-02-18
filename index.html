@@ -1,7 +1,87 @@
 <!DOCTYPE html>
 <html>
-    <body>
-        <h1>Hello World</h1>
-        <p>I'm hosted by GitHub Pages.</p>
-    </body>
+    <head>
+      <meta charset="utf-8">
+
+      <title>Calculations</title>
+
+      <style>
+        html {
+          font-family: sans-serif;
+        }
+
+      </style>
+    </head>
+<body>
+    <h1>Calcs</h1>
+
+
+    <div class="form_1">
+      <label for="form_1_field">Enter F_rod  (lbf): </label>
+      <input type="text" id="form_1_field" class="form_1_field">
+      <input type="submit" value="Submit" class="form_1_submit">
+    </div>
+
+    <div class="form_2">
+      <label for="form_2_field">Enter P_bore (psi): </label>
+      <input type="text" id="form_2_field" class="form_2_field">
+      <input type="submit" value="Submit" class="form_2_submit">
+    </div>
+
+    <div class="resultParas">
+      <p class="result_output"></p>
+    </div>
+
+    <script>
+
+      let f_rod  = 435; // need input
+      let p_bore =  75; // need input
+
+      let d_rod   = 63 // mm
+      let d_bore  = 80 // mm
+      let d_rode  = d_rod  / 25.4 // in
+      let d_boree = d_bore / 25.4 // in
+
+      //let a_rod  = 4.832;
+      //let a_bore = 7.791;
+      let a_rod  = Math.PI / 4.0 * (d_rode * d_rode);
+      let a_bore = Math.PI / 4.0 * (d_boree * d_boree);
+
+      let rob = a_rod / a_bore;
+      let k_1 = 1.0 / (1.0-rob);
+      let p_rod = k_1 * (f_rod / a_bore + p_bore);
+
+      const result_output = document.querySelector('.result_output');
+
+      const form_1_submit = document.querySelector('.form_1_submit');
+      const form_1_field  = document.querySelector('.form_1_field');
+
+      const form_2_submit = document.querySelector('.form_2_submit');
+      const form_2_field  = document.querySelector('.form_2_field');
+
+
+      function calcCylinderPressures(){
+          let user_f_rod  = Number(form_1_field.value);
+          let user_p_bore = Number(form_2_field.value);
+
+          result_output.textContent = '';
+          if (user_f_rod != "")
+              f_rod  = user_f_rod;
+          if (user_p_bore != "")
+              p_bore = user_p_bore;
+
+          result_output.textContent  = '  F rod  = ' + f_rod + ' lbf';
+          result_output.textContent += ', P bore = ' + p_bore + ' psi' ;
+          p_rod = k_1 * (f_rod / a_bore + p_bore);
+          result_output.textContent += ' ==> P rod = ' + p_rod.toPrecision(4) + ' psi' ;
+          form_1_field.focus();
+      }
+
+      form_1_submit.addEventListener('click', calcCylinderPressures);
+      form_2_submit.addEventListener('click', calcCylinderPressures);
+
+
+    </script>
+
+</body>
 </html>
