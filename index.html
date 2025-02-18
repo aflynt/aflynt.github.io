@@ -15,43 +15,35 @@
 <body>
     <h1>Calcs</h1>
 
+    <h2>Speed of Sound</h2>
 
     <div class="form_1">
-      <label for="form_1_field">Enter F_rod  (lbf): </label>
+      <label for="form_1_field">T [K]: </label>
       <input type="text" id="form_1_field" class="form_1_field">
       <input type="submit" value="Submit" class="form_1_submit">
     </div>
 
     <div class="form_2">
-      <label for="form_2_field">Enter P_bore (psi): </label>
+      <label for="form_2_field">k [#]: </label>
       <input type="text" id="form_2_field" class="form_2_field">
       <input type="submit" value="Submit" class="form_2_submit">
     </div>
 
     <div class="resultParas">
-      <p class="result_output"></p>
+      <p class="resa"></p>
+    </div>
+
+    <div class="resultParas">
+      <p class="resb"></p>
     </div>
 
     <script>
 
-      let f_rod  = 435; // need input
-      let p_bore =  75; // need input
+      let T = 293; 
+      let k =  1.4; 
 
-      let d_rod   = 63 // mm
-      let d_bore  = 80 // mm
-      let d_rode  = d_rod  / 25.4 // in
-      let d_boree = d_bore / 25.4 // in
-
-      //let a_rod  = 4.832;
-      //let a_bore = 7.791;
-      let a_rod  = Math.PI / 4.0 * (d_rode * d_rode);
-      let a_bore = Math.PI / 4.0 * (d_boree * d_boree);
-
-      let rob = a_rod / a_bore;
-      let k_1 = 1.0 / (1.0-rob);
-      let p_rod = k_1 * (f_rod / a_bore + p_bore);
-
-      const result_output = document.querySelector('.result_output');
+      const r1 = document.querySelector('.resa');
+      const r2 = document.querySelector('.resb');
 
       const form_1_submit = document.querySelector('.form_1_submit');
       const form_1_field  = document.querySelector('.form_1_field');
@@ -61,19 +53,24 @@
 
 
       function calcCylinderPressures(){
-          let user_f_rod  = Number(form_1_field.value);
-          let user_p_bore = Number(form_2_field.value);
+          let val_f1  = Number(form_1_field.value);
+          let val_f2 = Number(form_2_field.value);
 
-          result_output.textContent = '';
-          if (user_f_rod != "")
-              f_rod  = user_f_rod;
-          if (user_p_bore != "")
-              p_bore = user_p_bore;
+          r1.textContent = '';
+          r2.textContent = '';
 
-          result_output.textContent  = '  F rod  = ' + f_rod + ' lbf';
-          result_output.textContent += ', P bore = ' + p_bore + ' psi' ;
-          p_rod = k_1 * (f_rod / a_bore + p_bore);
-          result_output.textContent += ' ==> P rod = ' + p_rod.toPrecision(4) + ' psi' ;
+          if (val_f1 != "")
+              T  = val_f1;
+          if (val_f2 != "")
+              k = val_f2;
+
+          let a = Math.sqrt(k*287*T)
+
+          r1.textContent = ' T[K] = ' + T.toFixed(2);
+          var pv = document.createElement("p")
+          pv.innerText = "k = " + k;
+          r1.appendChild(pv)
+          r2.textContent = ' a = ' + a.toFixed(2)
           form_1_field.focus();
       }
 
